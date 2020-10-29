@@ -1,6 +1,8 @@
 package nodecom
 
 import (
+	"github.com/heegspace/heegproto/codenode"
+	"github.com/heegspace/heegproto/datanode"
 	"github.com/heegspace/heegrpc"
 	"github.com/heegspace/heegrpc/registry"
 	"github.com/heegspace/heegrpc/rpc"
@@ -11,8 +13,8 @@ import (
 // @param regi
 // @param node
 //
-func DatanodeClient(regi *registry.Registry, s2sname string) *rpc.HeegClient {
-	datanode_s2s, err := regi.Selector(s2sname)
+func DatanodeClient(s2sname string) *datanode.DatanodeServiceClient {
+	datanode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		panic(err)
 	}
@@ -22,5 +24,28 @@ func DatanodeClient(regi *registry.Registry, s2sname string) *rpc.HeegClient {
 		Port: int(datanode_s2s.Port),
 	})
 
-	return client
+	dataNode := codenode.NewDatanodeServiceClient(client.Client())
+
+	return dataNode
+}
+
+// 获取有数据节点客户端
+//
+// @param regi
+// @param node
+//
+func CodenodeClient(s2sname string) *datanode.CodenodeServiceClient {
+	datanode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		panic(err)
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: datanode_s2s.Host,
+		Port: int(datanode_s2s.Port),
+	})
+
+	codeNode := codenode.NewCodenodeServiceClient(client.Client())
+
+	return codeNode
 }
