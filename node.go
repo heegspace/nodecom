@@ -24,7 +24,7 @@ func Datanode(s2sname string) *datanode.DatanodeServiceClient {
 		Port: int(datanode_s2s.Port),
 	})
 
-	dataNode := codenode.NewDatanodeServiceClient(client.Client())
+	dataNode := datanode.NewDatanodeServiceClient(client.Client())
 
 	return dataNode
 }
@@ -34,7 +34,7 @@ func Datanode(s2sname string) *datanode.DatanodeServiceClient {
 // @param regi
 // @param node
 //
-func Codenode(s2sname string) *datanode.CodenodeServiceClient {
+func Codenode(s2sname string) *codenode.CodenodeServiceClient {
 	datanode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		panic(err)
