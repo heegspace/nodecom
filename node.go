@@ -13,7 +13,7 @@ import (
 // @param regi
 // @param node
 //
-func DatanodeClient(s2sname string) *datanode.DatanodeServiceClient {
+func Datanode(s2sname string) *datanode.DatanodeServiceClient {
 	datanode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		panic(err)
@@ -34,7 +34,7 @@ func DatanodeClient(s2sname string) *datanode.DatanodeServiceClient {
 // @param regi
 // @param node
 //
-func CodenodeClient(s2sname string) *datanode.CodenodeServiceClient {
+func Codenode(s2sname string) *datanode.CodenodeServiceClient {
 	datanode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		panic(err)
