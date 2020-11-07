@@ -1,7 +1,7 @@
 package nodecom
 
 import (
-	"heegproto/common"
+	"github.com/heegspace/heegproto/common"
 
 	"github.com/heegspace/heegproto/codenode"
 	"github.com/heegspace/heegproto/datanode"
