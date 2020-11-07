@@ -1,12 +1,27 @@
 package nodecom
 
 import (
+	"heegproto/common"
+
 	"github.com/heegspace/heegproto/codenode"
 	"github.com/heegspace/heegproto/datanode"
 	"github.com/heegspace/heegrpc"
 	"github.com/heegspace/heegrpc/registry"
 	"github.com/heegspace/heegrpc/rpc"
 )
+
+// 检查是否有权限
+//
+// @param auth 	授权参数
+// @return bool
+//
+func Authorize(auth *common.Authorize) bool {
+	if nil != auth {
+		return false
+	}
+
+	return true
+}
 
 // 获取有数据节点客户端
 //
