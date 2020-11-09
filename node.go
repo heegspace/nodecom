@@ -17,7 +17,7 @@ import (
 // @return bool
 //
 func Authorize(auth *common.Authorize) bool {
-	if nil != auth {
+	if nil == auth {
 		return false
 	}
 
