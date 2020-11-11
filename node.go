@@ -1,6 +1,8 @@
 package nodecom
 
 import (
+	"github.com/heegspace/heegproto/searchnode"
+
 	"github.com/heegspace/heegproto/common"
 
 	"github.com/heegspace/heegproto/codenode"
@@ -82,4 +84,24 @@ func Questionnode(s2sname string) *questionnode.QuestionnodeServiceClient {
 	questionNode := questionnode.NewQuestionnodeServiceClient(client.Client())
 
 	return questionNode
+}
+
+// 获取search节点客户端
+//
+// @param s2sname
+//
+func Searchnode(s2sname string) *searchnode.SearchnodeServiceClient {
+	searchnode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		panic(err)
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: searchnode_s2s.Host,
+		Port: int(searchnode_s2s.Port),
+	})
+
+	searchNode := searchnode.NewSearchnodeServiceClient(client.Client())
+
+	return searchNode
 }
