@@ -122,7 +122,7 @@ func Cloudnode(s2sname string) *cloudnode.CloudnodeServiceClient {
 		Port: int(cloudnode_s2s.Port),
 	})
 
-	cloudNode := cloudnode.NewSearchnodeServiceClient(client.Client())
+	cloudNode := cloudnode.NewCloudnodeServiceClient(client.Client())
 
 	return cloudNode
 }
