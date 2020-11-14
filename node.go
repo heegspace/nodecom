@@ -5,6 +5,7 @@ import (
 
 	"github.com/heegspace/heegproto/common"
 
+	"github.com/heegspace/heegproto/cloudnode"
 	"github.com/heegspace/heegproto/codenode"
 	"github.com/heegspace/heegproto/datanode"
 	"github.com/heegspace/heegproto/questionnode"
@@ -104,4 +105,24 @@ func Searchnode(s2sname string) *searchnode.SearchnodeServiceClient {
 	searchNode := searchnode.NewSearchnodeServiceClient(client.Client())
 
 	return searchNode
+}
+
+// 获取cloud节点客户端
+//
+// @param s2sname
+//
+func Cloudnode(s2sname string) *cloudnode.CloudnodeServiceClient {
+	cloudnode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		panic(err)
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: cloudnode_s2s.Host,
+		Port: int(cloudnode_s2s.Port),
+	})
+
+	cloudNode := cloudnode.NewSearchnodeServiceClient(client.Client())
+
+	return cloudNode
 }
