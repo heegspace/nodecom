@@ -1,6 +1,8 @@
 package nodecom
 
 import (
+	"github.com/heegspace/heegproto/registernode"
+
 	"github.com/heegspace/heegproto/searchnode"
 
 	"github.com/heegspace/heegproto/common"
@@ -41,6 +43,9 @@ func Datanode(s2sname string) *datanode.DatanodeServiceClient {
 		Addr: datanode_s2s.Host,
 		Port: int(datanode_s2s.Port),
 	})
+	if nil == client {
+		panic("New Heegrpc client is nil")
+	}
 
 	dataNode := datanode.NewDatanodeServiceClient(client.Client())
 
@@ -61,6 +66,9 @@ func Codenode(s2sname string) *codenode.CodenodeServiceClient {
 		Addr: datanode_s2s.Host,
 		Port: int(datanode_s2s.Port),
 	})
+	if nil == client {
+		panic("New Heegrpc client is nil")
+	}
 
 	codeNode := codenode.NewCodenodeServiceClient(client.Client())
 
@@ -81,6 +89,9 @@ func Questionnode(s2sname string) *questionnode.QuestionnodeServiceClient {
 		Addr: questionnode_s2s.Host,
 		Port: int(questionnode_s2s.Port),
 	})
+	if nil == client {
+		panic("New Heegrpc client is nil")
+	}
 
 	questionNode := questionnode.NewQuestionnodeServiceClient(client.Client())
 
@@ -101,6 +112,9 @@ func Searchnode(s2sname string) *searchnode.SearchnodeServiceClient {
 		Addr: searchnode_s2s.Host,
 		Port: int(searchnode_s2s.Port),
 	})
+	if nil == client {
+		panic("New Heegrpc client is nil")
+	}
 
 	searchNode := searchnode.NewSearchnodeServiceClient(client.Client())
 
@@ -121,8 +135,34 @@ func Cloudnode(s2sname string) *cloudnode.CloudnodeServiceClient {
 		Addr: cloudnode_s2s.Host,
 		Port: int(cloudnode_s2s.Port),
 	})
+	if nil == client {
+		panic("New Heegrpc client is nil")
+	}
 
 	cloudNode := cloudnode.NewCloudnodeServiceClient(client.Client())
 
 	return cloudNode
+}
+
+// 获取register节点客户端
+//
+// @param s2sname
+//
+func Registernode(s2sname string) *registernode.RegisternodeServiceClient {
+	registernode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		panic(err)
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: registernode_s2s.Host,
+		Port: int(registernode_s2s.Port),
+	})
+	if nil == client {
+		panic("New Heegrpc client is nil")
+	}
+
+	registerNode := registernode.NewRegisternodeServiceClient(client.Client())
+
+	return registerNode
 }
