@@ -1,6 +1,7 @@
 package nodecom
 
 import (
+	"github.com/heegspace/heegproto/loginnode"
 	"github.com/heegspace/heegproto/registernode"
 
 	"github.com/heegspace/heegproto/searchnode"
@@ -165,4 +166,27 @@ func Registernode(s2sname string) *registernode.RegisternodeServiceClient {
 	registerNode := registernode.NewRegisternodeServiceClient(client.Client())
 
 	return registerNode
+}
+
+// 获取login节点客户端
+//
+// @param s2sname
+//
+func Loginnode(s2sname string) *loginnode.LoginnodeServiceClient {
+	loginnode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		panic(err)
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: loginnode_s2s.Host,
+		Port: int(loginnode_s2s.Port),
+	})
+	if nil == client {
+		panic("New Heegrpc client is nil")
+	}
+
+	loginNode := registernode.NewLoginnodeServiceClient(client.Client())
+
+	return loginNode
 }
