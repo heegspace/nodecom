@@ -186,7 +186,7 @@ func Loginnode(s2sname string) *loginnode.LoginnodeServiceClient {
 		panic("New Heegrpc client is nil")
 	}
 
-	loginNode := registernode.NewLoginnodeServiceClient(client.Client())
+	loginNode := loginnode.NewLoginnodeServiceClient(client.Client())
 
 	return loginNode
 }
