@@ -12,6 +12,7 @@ import (
 	"github.com/heegspace/heegproto/codenode"
 	"github.com/heegspace/heegproto/datanode"
 	"github.com/heegspace/heegproto/questionnode"
+	"github.com/heegspace/heegproto/usernode"
 	"github.com/heegspace/heegrpc"
 	"github.com/heegspace/heegrpc/registry"
 	"github.com/heegspace/heegrpc/rpc"
@@ -189,4 +190,27 @@ func Loginnode(s2sname string) *loginnode.LoginnodeServiceClient {
 	loginNode := loginnode.NewLoginnodeServiceClient(client.Client())
 
 	return loginNode
+}
+
+// 获取login节点客户端
+//
+// @param s2sname
+//
+func Usernode(s2sname string) *usernode.UsernodeServiceClient {
+	usernode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		panic(err)
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: usernode_s2s.Host,
+		Port: int(usernode_s2s.Port),
+	})
+	if nil == client {
+		panic("New Heegrpc client is nil")
+	}
+
+	userNode := usernode.NewUsernodeServiceClient(client.Client())
+
+	return userNode
 }
