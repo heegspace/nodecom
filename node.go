@@ -220,15 +220,10 @@ func Usernode(s2sname string) *usernode.UsernodeServiceClient {
 //
 // @param s2sname
 //
-func S2sname(name string) *s2sname.S2snameServiceClient {
-	s2sname_s2s, err := registry.NewRegistry().Selector(name)
-	if nil != err {
-		panic(err)
-	}
-
+func S2sname(host string, port int) *s2sname.S2snameServiceClient {
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
-		Addr: s2sname_s2s.Host,
-		Port: int(s2sname_s2s.Port),
+		Addr: host,
+		Port: port,
 	})
 	if nil == client {
 		panic("New Heegrpc client is nil")
