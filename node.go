@@ -220,8 +220,8 @@ func Usernode(s2sname string) *usernode.UsernodeServiceClient {
 //
 // @param s2sname
 //
-func S2sname(s2sname string) *s2sname.S2snameServiceClient {
-	s2sname_s2s, err := registry.NewRegistry().Selector(s2sname)
+func S2sname(name string) *s2sname.S2snameServiceClient {
+	s2sname_s2s, err := registry.NewRegistry().Selector(name)
 	if nil != err {
 		panic(err)
 	}
