@@ -8,6 +8,7 @@ import (
 
 	"github.com/heegspace/heegproto/common"
 
+	"github.com/heegspace/heegproto/authnode"
 	"github.com/heegspace/heegproto/cloudnode"
 	"github.com/heegspace/heegproto/codenode"
 	"github.com/heegspace/heegproto/datanode"
@@ -214,6 +215,29 @@ func Usernode(s2sname string) *usernode.UsernodeServiceClient {
 	userNode := usernode.NewUsernodeServiceClient(client.Client())
 
 	return userNode
+}
+
+// 获取login节点客户端
+//
+// @param s2sname
+//
+func Authnode(s2sname string) *authnode.AuthnodeServiceClient {
+	authnode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		panic(err)
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: authnode_s2s.Host,
+		Port: int(authnode_s2s.Port),
+	})
+	if nil == client {
+		panic("New Heegrpc client is nil")
+	}
+
+	authNode := authnode.NewAuthnodeServiceClient(client.Client())
+
+	return authNode
 }
 
 // 获取ls2s节点客户端
