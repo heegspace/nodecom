@@ -1,6 +1,9 @@
 package nodecom
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/heegspace/heegproto/loginnode"
 	"github.com/heegspace/heegproto/registernode"
 
@@ -38,9 +41,13 @@ func Authorize(auth *common.Authorize) bool {
 // @param s2sname
 //
 func Datanode(s2sname string) *datanode.DatanodeServiceClient {
+retry:
 	datanode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
-		panic(err)
+		fmt.Println(s2sname, " node fail, 2s retry. ", err)
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -48,7 +55,10 @@ func Datanode(s2sname string) *datanode.DatanodeServiceClient {
 		Port: int(datanode_s2s.Port),
 	})
 	if nil == client {
-		panic("New Heegrpc client is nil")
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	dataNode := datanode.NewDatanodeServiceClient(client.Client())
@@ -61,9 +71,13 @@ func Datanode(s2sname string) *datanode.DatanodeServiceClient {
 // @param s2sname
 //
 func Codenode(s2sname string) *codenode.CodenodeServiceClient {
+retry:
 	datanode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
-		panic(err)
+		fmt.Println(s2sname, " node fail, 2s retry. ", err)
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -71,7 +85,10 @@ func Codenode(s2sname string) *codenode.CodenodeServiceClient {
 		Port: int(datanode_s2s.Port),
 	})
 	if nil == client {
-		panic("New Heegrpc client is nil")
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	codeNode := codenode.NewCodenodeServiceClient(client.Client())
@@ -84,9 +101,13 @@ func Codenode(s2sname string) *codenode.CodenodeServiceClient {
 // @param s2sname
 //
 func Questionnode(s2sname string) *questionnode.QuestionnodeServiceClient {
+retry:
 	questionnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
-		panic(err)
+		fmt.Println(s2sname, " node fail, 2s retry. ", err)
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -94,7 +115,10 @@ func Questionnode(s2sname string) *questionnode.QuestionnodeServiceClient {
 		Port: int(questionnode_s2s.Port),
 	})
 	if nil == client {
-		panic("New Heegrpc client is nil")
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	questionNode := questionnode.NewQuestionnodeServiceClient(client.Client())
@@ -107,9 +131,13 @@ func Questionnode(s2sname string) *questionnode.QuestionnodeServiceClient {
 // @param s2sname
 //
 func Searchnode(s2sname string) *searchnode.SearchnodeServiceClient {
+retry:
 	searchnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
-		panic(err)
+		fmt.Println(s2sname, " node fail, 2s retry. ", err)
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -117,7 +145,10 @@ func Searchnode(s2sname string) *searchnode.SearchnodeServiceClient {
 		Port: int(searchnode_s2s.Port),
 	})
 	if nil == client {
-		panic("New Heegrpc client is nil")
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	searchNode := searchnode.NewSearchnodeServiceClient(client.Client())
@@ -130,9 +161,13 @@ func Searchnode(s2sname string) *searchnode.SearchnodeServiceClient {
 // @param s2sname
 //
 func Cloudnode(s2sname string) *cloudnode.CloudnodeServiceClient {
+retry:
 	cloudnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
-		panic(err)
+		fmt.Println(s2sname, " node fail, 2s retry. ", err)
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -140,7 +175,10 @@ func Cloudnode(s2sname string) *cloudnode.CloudnodeServiceClient {
 		Port: int(cloudnode_s2s.Port),
 	})
 	if nil == client {
-		panic("New Heegrpc client is nil")
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	cloudNode := cloudnode.NewCloudnodeServiceClient(client.Client())
@@ -153,9 +191,13 @@ func Cloudnode(s2sname string) *cloudnode.CloudnodeServiceClient {
 // @param s2sname
 //
 func Registernode(s2sname string) *registernode.RegisternodeServiceClient {
+retry:
 	registernode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
-		panic(err)
+		fmt.Println(s2sname, " node fail, 2s retry. ", err)
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -163,7 +205,10 @@ func Registernode(s2sname string) *registernode.RegisternodeServiceClient {
 		Port: int(registernode_s2s.Port),
 	})
 	if nil == client {
-		panic("New Heegrpc client is nil")
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	registerNode := registernode.NewRegisternodeServiceClient(client.Client())
@@ -176,9 +221,13 @@ func Registernode(s2sname string) *registernode.RegisternodeServiceClient {
 // @param s2sname
 //
 func Loginnode(s2sname string) *loginnode.LoginnodeServiceClient {
+retry:
 	loginnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
-		panic(err)
+		fmt.Println(s2sname, " node fail, 2s retry. ", err)
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -186,7 +235,10 @@ func Loginnode(s2sname string) *loginnode.LoginnodeServiceClient {
 		Port: int(loginnode_s2s.Port),
 	})
 	if nil == client {
-		panic("New Heegrpc client is nil")
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	loginNode := loginnode.NewLoginnodeServiceClient(client.Client())
@@ -199,9 +251,13 @@ func Loginnode(s2sname string) *loginnode.LoginnodeServiceClient {
 // @param s2sname
 //
 func Usernode(s2sname string) *usernode.UsernodeServiceClient {
+retry:
 	usernode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
-		panic(err)
+		fmt.Println(s2sname, " node fail, 2s retry. ", err)
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -209,7 +265,10 @@ func Usernode(s2sname string) *usernode.UsernodeServiceClient {
 		Port: int(usernode_s2s.Port),
 	})
 	if nil == client {
-		panic("New Heegrpc client is nil")
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	userNode := usernode.NewUsernodeServiceClient(client.Client())
@@ -222,9 +281,13 @@ func Usernode(s2sname string) *usernode.UsernodeServiceClient {
 // @param s2sname
 //
 func Authnode(s2sname string) *authnode.AuthnodeServiceClient {
+retry:
 	authnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
-		panic(err)
+		fmt.Println(s2sname, " node fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -232,7 +295,10 @@ func Authnode(s2sname string) *authnode.AuthnodeServiceClient {
 		Port: int(authnode_s2s.Port),
 	})
 	if nil == client {
-		panic("New Heegrpc client is nil")
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
 	}
 
 	authNode := authnode.NewAuthnodeServiceClient(client.Client())
