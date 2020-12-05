@@ -2,7 +2,6 @@ package nodecom
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -12,25 +11,22 @@ var TABLE_NAME map[string]interface{}
 // 加载数据表名配置文件
 //
 // @param file
+// @return err
 //
-func LoadTableFromFile(file string) {
+func LoadTableFromFile(file string) (err error) {
 	if nil != TABLE_NAME {
-		return
+		return nil
 	}
 
 	f, err := os.Open(file)
 	if err != nil {
-		fmt.Println(err)
-
 		return
 	}
 	defer f.Close()
 
 	data, _ := ioutil.ReadAll(f)
-
 	err = json.Unmarshal([]byte(data), &TABLE_NAME)
 	if nil != err {
-		fmt.Println(err)
 		return
 	}
 
