@@ -62,10 +62,10 @@ retry:
 		goto retry
 	}
 
-	client, trans := client.Client()
-	dataNode := datanode.NewDatanodeServiceClient(client)
+	client1, trans1 := client.Client()
+	dataNode := datanode.NewDatanodeServiceClient(client1)
 
-	return dataNode, trans
+	return dataNode, trans1
 }
 
 // 获取有数据节点客户端
@@ -93,10 +93,10 @@ retry:
 		goto retry
 	}
 
-	client, trans := client.Client()
-	codeNode := codenode.NewCodenodeServiceClient(client)
+	client1, trans1 := client.Client()
+	codeNode := codenode.NewCodenodeServiceClient(client1)
 
-	return codeNode, trans
+	return codeNode, trans1
 }
 
 // 获取question节点客户端
@@ -124,10 +124,10 @@ retry:
 		goto retry
 	}
 
-	client, trans := client.Client()
-	questionNode := questionnode.NewQuestionnodeServiceClient(client)
+	client1, trans1 := client.Client()
+	questionNode := questionnode.NewQuestionnodeServiceClient(client1)
 
-	return questionNode, trans
+	return questionNode, trans1
 }
 
 // 获取search节点客户端
@@ -155,10 +155,10 @@ retry:
 		goto retry
 	}
 
-	client, trans := client.Client()
-	searchNode := searchnode.NewSearchnodeServiceClient(client)
+	client1, trans1 := client.Client()
+	searchNode := searchnode.NewSearchnodeServiceClient(client1)
 
-	return searchNode, trans
+	return searchNode, trans1
 }
 
 // 获取cloud节点客户端
@@ -186,10 +186,10 @@ retry:
 		goto retry
 	}
 
-	client, trans := client.Client()
-	cloudNode := cloudnode.NewCloudnodeServiceClient(client)
+	client1, trans1 := client.Client()
+	cloudNode := cloudnode.NewCloudnodeServiceClient(client1)
 
-	return cloudNode, trans
+	return cloudNode, trans1
 }
 
 // 获取register节点客户端
@@ -217,10 +217,10 @@ retry:
 		goto retry
 	}
 
-	client, trans := client.Client()
-	registerNode := registernode.NewRegisternodeServiceClient(client)
+	client1, trans1 := client.Client()
+	registerNode := registernode.NewRegisternodeServiceClient(client1)
 
-	return registerNode, trans
+	return registerNode, trans1
 }
 
 // 获取login节点客户端
@@ -248,10 +248,10 @@ retry:
 		goto retry
 	}
 
-	client, trans := client.Client()
-	loginNode := loginnode.NewLoginnodeServiceClient(client)
+	client1, trans1 := client.Client()
+	loginNode := loginnode.NewLoginnodeServiceClient(client1)
 
-	return loginNode, trans
+	return loginNode, trans1
 }
 
 // 获取login节点客户端
@@ -279,10 +279,10 @@ retry:
 		goto retry
 	}
 
-	client, trans := client.Client()
-	userNode := usernode.NewUsernodeServiceClient(client)
+	client1, trans1 := client.Client()
+	userNode := usernode.NewUsernodeServiceClient(client1)
 
-	return userNode, trans
+	return userNode, trans1
 }
 
 // 获取login节点客户端
@@ -310,10 +310,10 @@ retry:
 		goto retry
 	}
 
-	client, trans := client.Client()
-	authNode := authnode.NewAuthnodeServiceClient(client)
+	client1, trans1 := client.Client()
+	authNode := authnode.NewAuthnodeServiceClient(client1)
 
-	return authNode, trans
+	return authNode, trans1
 }
 
 // 获取ls2s节点客户端
@@ -329,8 +329,8 @@ func S2sname(host string, port int) (*s2sname.S2snameServiceClient, *thrift.TBuf
 		panic("New Heegrpc client is nil")
 	}
 
-	client, trans := client.Client()
-	s2s := s2sname.NewS2snameServiceClient(client)
+	client1, trans1 := client.Client()
+	s2s := s2sname.NewS2snameServiceClient(client1)
 
-	return s2s, trans
+	return s2s, trans1
 }
