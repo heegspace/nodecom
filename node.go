@@ -21,6 +21,7 @@ import (
 	"github.com/heegspace/heegrpc"
 	"github.com/heegspace/heegrpc/registry"
 	"github.com/heegspace/heegrpc/rpc"
+	"github.com/heegspace/thrift"
 )
 
 // 检查是否有权限
@@ -40,7 +41,7 @@ func Authorize(auth *common.Authorize) bool {
 //
 // @param s2sname
 //
-func Datanode(s2sname string) *datanode.DatanodeServiceClient {
+func Datanode(s2sname string) *datanode.DatanodeServiceClient,*thrift.TBufferedTransport {
 retry:
 	datanode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
@@ -61,16 +62,17 @@ retry:
 		goto retry
 	}
 
-	dataNode := datanode.NewDatanodeServiceClient(client.Client())
+	client,trans := client.Client()
+	dataNode := datanode.NewDatanodeServiceClient(client)
 
-	return dataNode
+	return dataNode, trans
 }
 
 // 获取有数据节点客户端
 //
 // @param s2sname
 //
-func Codenode(s2sname string) *codenode.CodenodeServiceClient {
+func Codenode(s2sname string) *codenode.CodenodeServiceClient,*thrift.TBufferedTransport {
 retry:
 	datanode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
@@ -91,16 +93,17 @@ retry:
 		goto retry
 	}
 
-	codeNode := codenode.NewCodenodeServiceClient(client.Client())
+	client,trans := client.Client()
+	codeNode := codenode.NewCodenodeServiceClient(client)
 
-	return codeNode
+	return codeNode,trans
 }
 
 // 获取question节点客户端
 //
 // @param s2sname
 //
-func Questionnode(s2sname string) *questionnode.QuestionnodeServiceClient {
+func Questionnode(s2sname string) *questionnode.QuestionnodeServiceClient,*thrift.TBufferedTransport {
 retry:
 	questionnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
@@ -121,16 +124,17 @@ retry:
 		goto retry
 	}
 
-	questionNode := questionnode.NewQuestionnodeServiceClient(client.Client())
+	client,trans := client.Client()
+	questionNode := questionnode.NewQuestionnodeServiceClient(client)
 
-	return questionNode
+	return questionNode,trans
 }
 
 // 获取search节点客户端
 //
 // @param s2sname
 //
-func Searchnode(s2sname string) *searchnode.SearchnodeServiceClient {
+func Searchnode(s2sname string) *searchnode.SearchnodeServiceClient,*thrift.TBufferedTransport {
 retry:
 	searchnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
@@ -151,16 +155,17 @@ retry:
 		goto retry
 	}
 
-	searchNode := searchnode.NewSearchnodeServiceClient(client.Client())
+	client,trans := client.Client()
+	searchNode := searchnode.NewSearchnodeServiceClient(client)
 
-	return searchNode
+	return searchNode,trans
 }
 
 // 获取cloud节点客户端
 //
 // @param s2sname
 //
-func Cloudnode(s2sname string) *cloudnode.CloudnodeServiceClient {
+func Cloudnode(s2sname string) *cloudnode.CloudnodeServiceClient,*thrift.TBufferedTransport {
 retry:
 	cloudnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
@@ -181,16 +186,17 @@ retry:
 		goto retry
 	}
 
-	cloudNode := cloudnode.NewCloudnodeServiceClient(client.Client())
+	client,trans := client.Client()
+	cloudNode := cloudnode.NewCloudnodeServiceClient(client)
 
-	return cloudNode
+	return cloudNode,trans
 }
 
 // 获取register节点客户端
 //
 // @param s2sname
 //
-func Registernode(s2sname string) *registernode.RegisternodeServiceClient {
+func Registernode(s2sname string) *registernode.RegisternodeServiceClient,*thrift.TBufferedTransport {
 retry:
 	registernode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
@@ -211,16 +217,17 @@ retry:
 		goto retry
 	}
 
-	registerNode := registernode.NewRegisternodeServiceClient(client.Client())
+	client,trans := client.Client()
+	registerNode := registernode.NewRegisternodeServiceClient(client)
 
-	return registerNode
+	return registerNode,trans
 }
 
 // 获取login节点客户端
 //
 // @param s2sname
 //
-func Loginnode(s2sname string) *loginnode.LoginnodeServiceClient {
+func Loginnode(s2sname string) *loginnode.LoginnodeServiceClient,*thrift.TBufferedTransport {
 retry:
 	loginnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
@@ -241,16 +248,17 @@ retry:
 		goto retry
 	}
 
-	loginNode := loginnode.NewLoginnodeServiceClient(client.Client())
+	client,trans := client.Client()
+	loginNode := loginnode.NewLoginnodeServiceClient(client)
 
-	return loginNode
+	return loginNode,trans
 }
 
 // 获取login节点客户端
 //
 // @param s2sname
 //
-func Usernode(s2sname string) *usernode.UsernodeServiceClient {
+func Usernode(s2sname string) *usernode.UsernodeServiceClient,*thrift.TBufferedTransport {
 retry:
 	usernode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
@@ -271,16 +279,17 @@ retry:
 		goto retry
 	}
 
-	userNode := usernode.NewUsernodeServiceClient(client.Client())
+	client,trans := client.Client()
+	userNode := usernode.NewUsernodeServiceClient(client)
 
-	return userNode
+	return userNode,trans
 }
 
 // 获取login节点客户端
 //
 // @param s2sname
 //
-func Authnode(s2sname string) *authnode.AuthnodeServiceClient {
+func Authnode(s2sname string) *authnode.AuthnodeServiceClient,*thrift.TBufferedTransport {
 retry:
 	authnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
@@ -301,16 +310,17 @@ retry:
 		goto retry
 	}
 
-	authNode := authnode.NewAuthnodeServiceClient(client.Client())
+	client,trans := client.Client()
+	authNode := authnode.NewAuthnodeServiceClient(client)
 
-	return authNode
+	return authNode,trans
 }
 
 // 获取ls2s节点客户端
 //
 // @param s2sname
 //
-func S2sname(host string, port int) *s2sname.S2snameServiceClient {
+func S2sname(host string, port int) *s2sname.S2snameServiceClient,*thrift.TBufferedTransport {
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
 		Addr: host,
 		Port: port,
@@ -319,7 +329,8 @@ func S2sname(host string, port int) *s2sname.S2snameServiceClient {
 		panic("New Heegrpc client is nil")
 	}
 
-	s2s := s2sname.NewS2snameServiceClient(client.Client())
+	client,trans := client.Client()
+	s2s := s2sname.NewS2snameServiceClient(client)
 
-	return s2s
+	return s2s,trans
 }
