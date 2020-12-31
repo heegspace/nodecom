@@ -2,6 +2,8 @@ package nodecom
 
 import (
 	"fmt"
+	"heegproto/friendnode"
+	"heegproto/notenode"
 	"time"
 
 	"github.com/heegspace/heegproto/loginnode"
@@ -314,6 +316,68 @@ retry:
 	authNode := authnode.NewAuthnodeServiceClient(client1)
 
 	return authNode, trans1
+}
+
+// 获取note节点客户端
+//
+// @param s2sname
+//
+func Notenode(s2sname string) (*notenode.NotenodeServiceClient, *thrift.TBufferedTransport) {
+retry:
+	notenode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		fmt.Println(s2sname, " node fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: notenode_s2s.Host,
+		Port: int(notenode_s2s.Port),
+	})
+	if nil == client {
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client1, trans1 := client.Client()
+	noteNode := notenode.NewNotenodeServiceClient(client1)
+
+	return noteNode, trans1
+}
+
+// 获取friend节点客户端
+//
+// @param s2sname
+//
+func Friendnode(s2sname string) (*friendnode.FriendnodeServiceClient, *thrift.TBufferedTransport) {
+retry:
+	friendnode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		fmt.Println(s2sname, " node fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: friendnode_s2s.Host,
+		Port: int(friendnode_s2s.Port),
+	})
+	if nil == client {
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client1, trans1 := client.Client()
+	friendNode := friendnode.NewFriendnodeServiceClient(client1)
+
+	return friendNode, trans1
 }
 
 // 获取ls2s节点客户端
