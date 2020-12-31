@@ -2,9 +2,10 @@ package nodecom
 
 import (
 	"fmt"
-	"heegproto/friendnode"
-	"heegproto/notenode"
 	"time"
+
+	"github.com/heegspace/heegproto/friendnode"
+	"github.com/heegspace/heegproto/notenode"
 
 	"github.com/heegspace/heegproto/loginnode"
 	"github.com/heegspace/heegproto/registernode"
