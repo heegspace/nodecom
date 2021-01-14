@@ -17,6 +17,7 @@ import (
 	"github.com/heegspace/heegproto/authnode"
 	"github.com/heegspace/heegproto/cloudnode"
 	"github.com/heegspace/heegproto/codenode"
+	"github.com/heegspace/heegproto/dartynode"
 	"github.com/heegspace/heegproto/datanode"
 	"github.com/heegspace/heegproto/questionnode"
 	"github.com/heegspace/heegproto/s2sname"
@@ -379,6 +380,37 @@ retry:
 	friendNode := friendnode.NewFriendnodeServiceClient(client1)
 
 	return friendNode, trans1
+}
+
+// 获取darty节点客户端
+//
+// @param s2sname
+//
+func Dartynode(s2sname string) (*dartynode.DartynodeServiceClient, *thrift.TBufferedTransport) {
+retry:
+	dartynode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		fmt.Println(s2sname, " node fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: dartynode_s2s.Host,
+		Port: int(dartynode_s2s.Port),
+	})
+	if nil == client {
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client1, trans1 := client.Client()
+	dartyNode := dartynode.NewDartynodeServiceClient(client1)
+
+	return dartyNode, trans1
 }
 
 // 获取ls2s节点客户端
