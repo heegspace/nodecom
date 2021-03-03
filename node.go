@@ -21,6 +21,7 @@ import (
 	"github.com/heegspace/heegproto/datanode"
 	"github.com/heegspace/heegproto/questionnode"
 	"github.com/heegspace/heegproto/s2sname"
+	"github.com/heegspace/heegproto/sensinode"
 	"github.com/heegspace/heegproto/usernode"
 	"github.com/heegspace/heegrpc"
 	"github.com/heegspace/heegrpc/registry"
@@ -411,6 +412,37 @@ retry:
 	dartyNode := dartynode.NewDartynodeServiceClient(client1)
 
 	return dartyNode, trans1
+}
+
+// 获取sensi节点客户端
+//
+// @param s2sname
+//
+func Sensinode(s2sname string) (*sensinode.SensinodeServiceClient, *thrift.TBufferedTransport) {
+retry:
+	sensinode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		fmt.Println(s2sname, " node fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: sensinode_s2s.Host,
+		Port: int(sensinode_s2s.Port),
+	})
+	if nil == client {
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client1, trans1 := client.Client()
+	sensiNode := sensinode.NewSensinodeServiceClient(client1)
+
+	return sensiNode, trans1
 }
 
 // 获取ls2s节点客户端
