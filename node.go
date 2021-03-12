@@ -19,6 +19,7 @@ import (
 	"github.com/heegspace/heegproto/codenode"
 	"github.com/heegspace/heegproto/dartynode"
 	"github.com/heegspace/heegproto/datanode"
+	"github.com/heegspace/heegproto/limitnode"
 	"github.com/heegspace/heegproto/questionnode"
 	"github.com/heegspace/heegproto/s2sname"
 	"github.com/heegspace/heegproto/sensinode"
@@ -443,6 +444,37 @@ retry:
 	sensiNode := sensinode.NewSensinodeServiceClient(client1)
 
 	return sensiNode, trans1
+}
+
+// 获取limit节点客户端
+//
+// @param s2sname
+//
+func Limitnode(s2sname string) (*limitnode.LimitnodeServiceClient, *thrift.TBufferedTransport) {
+retry:
+	limitnode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		fmt.Println(s2sname, " node fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: limitnode_s2s.Host,
+		Port: int(limitnode_s2s.Port),
+	})
+	if nil == client {
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client1, trans1 := client.Client()
+	limitNode := limitnode.NewLimitnodeServiceClient(client1)
+
+	return limitNode, trans1
 }
 
 // 获取ls2s节点客户端
