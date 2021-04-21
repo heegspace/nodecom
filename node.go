@@ -23,6 +23,7 @@ import (
 	"github.com/heegspace/heegproto/questionnode"
 	"github.com/heegspace/heegproto/s2sname"
 	"github.com/heegspace/heegproto/sensinode"
+	"github.com/heegspace/heegproto/teachnode"
 	"github.com/heegspace/heegproto/usernode"
 	"github.com/heegspace/heegrpc"
 	"github.com/heegspace/heegrpc/registry"
@@ -475,6 +476,37 @@ retry:
 	limitNode := limitnode.NewLimitnodeServiceClient(client1)
 
 	return limitNode, trans1
+}
+
+// 获取teachnode节点
+//
+// @param s2sname
+//
+func Teachnode(s2sname string) (*teachnode.TeachnodeServiceClient, *thrift.TBufferedTransport) {
+retry:
+	teachnode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		fmt.Println(s2sname, " node fail, 2s retry.")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: teachnode_s2s.Host,
+		Port: int(teachnode_s2s.Port),
+	})
+	if nil == client {
+		fmt.Println(s2sname, " client fail, 2s retry.")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client1, tran1 := client.Client()
+	teachNode := teachnode.NewTeachnodeServiceClient(client1)
+
+	return teachNode, tran1
 }
 
 // 获取ls2s节点客户端
