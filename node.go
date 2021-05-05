@@ -510,6 +510,8 @@ retry:
 	return teachNode, tran1
 }
 
+// 创建cert客户端
+//
 func Certnode(s2sname string) (*certnode.CertnodeServiceClient, *thrift.TBufferedTransport) {
 retry:
 	certnode_s2s, err := registry.NewRegistry().Selector(s2sname)
