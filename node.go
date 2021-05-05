@@ -15,6 +15,7 @@ import (
 	"github.com/heegspace/heegproto/common"
 
 	"github.com/heegspace/heegproto/authnode"
+	"github.com/heegspace/heegproto/certnode"
 	"github.com/heegspace/heegproto/cloudnode"
 	"github.com/heegspace/heegproto/codenode"
 	"github.com/heegspace/heegproto/dartynode"
@@ -507,6 +508,33 @@ retry:
 	teachNode := teachnode.NewTeachnodeServiceClient(client1)
 
 	return teachNode, tran1
+}
+
+func Certnode(s2sname string) (*certnode.CertnodeServiceClient, *thrift.TBufferedTransport) {
+retry:
+	certnode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		fmt.Println(s2sname, " node fail, 2s retry.")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: certnode_s2s.Host,
+		Port: int(certnode_s2s.Port),
+	})
+	if nil == client {
+		fmt.Println(s2sname, " client fail, 2s retry.")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client1, tran1 := client.Client()
+	certNode := certnode.NewCertnodeServiceClient(client1)
+
+	return certNode, tran1
 }
 
 // 获取ls2s节点客户端
