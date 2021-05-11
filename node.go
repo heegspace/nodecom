@@ -2,7 +2,6 @@ package nodecom
 
 import (
 	"fmt"
-	"heegproto/macipnode"
 	"time"
 
 	"github.com/heegspace/heegproto/friendnode"
