@@ -2,6 +2,7 @@ package nodecom
 
 import (
 	"fmt"
+	"heegproto/macipnode"
 	"time"
 
 	"github.com/heegspace/heegproto/friendnode"
@@ -21,6 +22,7 @@ import (
 	"github.com/heegspace/heegproto/dartynode"
 	"github.com/heegspace/heegproto/datanode"
 	"github.com/heegspace/heegproto/limitnode"
+	"github.com/heegspace/heegproto/macipnode"
 	"github.com/heegspace/heegproto/questionnode"
 	"github.com/heegspace/heegproto/s2sname"
 	"github.com/heegspace/heegproto/sensinode"
@@ -537,6 +539,35 @@ retry:
 	certNode := certnode.NewCertnodeServiceClient(client1)
 
 	return certNode, tran1
+}
+
+// 创建macipnode客户端
+//
+func Macipnode(s2sname string) (*macipnode.MacipnodeServiceClient, *thrift.TBufferedTransport) {
+retry:
+	macipnode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		fmt.Println(s2sname, " node fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: macipnode_s2s.Host,
+		Port: int(macipnode_s2s.Port),
+	})
+	if nil == client {
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client1, trans1 := client.Client()
+	macipNode := macipnode.NewMacipnodeServiceClient(client1)
+
+	return macipNode, trans1
 }
 
 // 获取ls2s节点客户端
