@@ -21,6 +21,7 @@ import (
 	"github.com/heegspace/heegproto/dartynode"
 	"github.com/heegspace/heegproto/datanode"
 	"github.com/heegspace/heegproto/limitnode"
+	"github.com/heegspace/heegproto/lognode"
 	"github.com/heegspace/heegproto/macipnode"
 	"github.com/heegspace/heegproto/questionnode"
 	"github.com/heegspace/heegproto/s2sname"
@@ -565,6 +566,35 @@ retry:
 
 	client1, trans1 := client.Client()
 	macipNode := macipnode.NewMacipnodeServiceClient(client1)
+
+	return macipNode, trans1
+}
+
+// 获取Lognode客户端
+//
+func Lognode(s2sname string) (*lognode.LognodeServiceClient, *thrift.TBufferedTransport) {
+retry:
+	lognode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		fmt.Println(s2sname, " node fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: lognode_s2s.Host,
+		Port: int(lognode_s2s.Port),
+	})
+	if nil == client {
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client1, trans1 := client.Client()
+	macipNode := lognode.NewLognodeServiceClient(client1)
 
 	return macipNode, trans1
 }
