@@ -18,6 +18,7 @@ import (
 	"github.com/heegspace/heegproto/certnode"
 	"github.com/heegspace/heegproto/cloudnode"
 	"github.com/heegspace/heegproto/codenode"
+	"github.com/heegspace/heegproto/cronnode"
 	"github.com/heegspace/heegproto/dartynode"
 	"github.com/heegspace/heegproto/datanode"
 	"github.com/heegspace/heegproto/limitnode"
@@ -597,6 +598,35 @@ retry:
 	macipNode := lognode.NewLognodeServiceClient(client1)
 
 	return macipNode, trans1
+}
+
+// 获取Cronnode客户端
+//
+func Cronnode(s2sname string) (*cronnode.CronnodeServiceClient, *thrift.TBufferedTransport) {
+retry:
+	cronnode_s2s, err := registry.NewRegistry().Selector(s2sname)
+	if nil != err {
+		fmt.Println(s2sname, " node fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client := heegrpc.NewHeegRpcClient(rpc.Option{
+		Addr: cronnode_s2s.Host,
+		Port: int(cronnode_s2s.Port),
+	})
+	if nil == client {
+		fmt.Println(s2sname, " client fail, 2s retry. ")
+
+		time.Sleep(2 * time.Second)
+		goto retry
+	}
+
+	client1, trans1 := client.Client()
+	cronNode := cronnode.NewCronnodeServiceClient(client1)
+
+	return cronNode, trans1
 }
 
 // 获取ls2s节点客户端
