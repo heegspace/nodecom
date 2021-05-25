@@ -504,7 +504,7 @@ func Teachnode(s2sname string) (*teachnode.TeachnodeServiceClient, *thrift.TBuff
 	}
 
 	client1, tran1 := client.Client()
-	if nil == client1 || nil == trans1 {
+	if nil == client1 || nil == tran1 {
 		return nil, nil
 	}
 
@@ -533,7 +533,7 @@ func Certnode(s2sname string) (*certnode.CertnodeServiceClient, *thrift.TBuffere
 	}
 
 	client1, tran1 := client.Client()
-	if nil == client1 || nil == trans1 {
+	if nil == client1 || nil == tran1 {
 		return nil, nil
 	}
 
