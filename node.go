@@ -2,7 +2,6 @@ package nodecom
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/heegspace/heegproto/friendnode"
 	"github.com/heegspace/heegproto/notenode"
@@ -53,13 +52,11 @@ func Authorize(auth *common.Authorize) bool {
 // @param s2sname
 //
 func Datanode(s2sname string) (*datanode.DatanodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	datanode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		time.Sleep(2 * time.Microsecond)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -69,13 +66,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	dataNode := datanode.NewDatanodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	dataNode := datanode.NewDatanodeServiceClient(client1)
 	return dataNode, trans1
 }
 
@@ -88,7 +87,7 @@ func Codenode(s2sname string) (*codenode.CodenodeServiceClient, *thrift.TBuffere
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		return &codenode.CodenodeServiceClient{}, &thrift.TBufferedTransport{}
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -98,12 +97,12 @@ func Codenode(s2sname string) (*codenode.CodenodeServiceClient, *thrift.TBuffere
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		return &codenode.CodenodeServiceClient{}, &thrift.TBufferedTransport{}
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
 	if nil == client1 || nil == trans1 {
-		return &codenode.CodenodeServiceClient{}, &thrift.TBufferedTransport{}
+		return nil, nil
 	}
 
 	codeNode := codenode.NewCodenodeServiceClient(client1)
@@ -115,13 +114,11 @@ func Codenode(s2sname string) (*codenode.CodenodeServiceClient, *thrift.TBuffere
 // @param s2sname
 //
 func Questionnode(s2sname string) (*questionnode.QuestionnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	questionnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -131,13 +128,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	questionNode := questionnode.NewQuestionnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	questionNode := questionnode.NewQuestionnodeServiceClient(client1)
 	return questionNode, trans1
 }
 
@@ -146,13 +145,11 @@ retry:
 // @param s2sname
 //
 func Searchnode(s2sname string) (*searchnode.SearchnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	searchnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -162,13 +159,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	searchNode := searchnode.NewSearchnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	searchNode := searchnode.NewSearchnodeServiceClient(client1)
 	return searchNode, trans1
 }
 
@@ -177,13 +176,11 @@ retry:
 // @param s2sname
 //
 func Cloudnode(s2sname string) (*cloudnode.CloudnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	cloudnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -193,13 +190,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	cloudNode := cloudnode.NewCloudnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	cloudNode := cloudnode.NewCloudnodeServiceClient(client1)
 	return cloudNode, trans1
 }
 
@@ -208,13 +207,11 @@ retry:
 // @param s2sname
 //
 func Registernode(s2sname string) (*registernode.RegisternodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	registernode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -224,13 +221,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	registerNode := registernode.NewRegisternodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	registerNode := registernode.NewRegisternodeServiceClient(client1)
 	return registerNode, trans1
 }
 
@@ -239,13 +238,11 @@ retry:
 // @param s2sname
 //
 func Loginnode(s2sname string) (*loginnode.LoginnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	loginnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -255,13 +252,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	loginNode := loginnode.NewLoginnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	loginNode := loginnode.NewLoginnodeServiceClient(client1)
 	return loginNode, trans1
 }
 
@@ -274,7 +273,7 @@ func Usernode(s2sname string) (*usernode.UsernodeServiceClient, *thrift.TBuffere
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		return &usernode.UsernodeServiceClient{}, &thrift.TBufferedTransport{}
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -284,12 +283,12 @@ func Usernode(s2sname string) (*usernode.UsernodeServiceClient, *thrift.TBuffere
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		return &usernode.UsernodeServiceClient{}, &thrift.TBufferedTransport{}
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
 	if nil == client1 || nil == trans1 {
-		return &usernode.UsernodeServiceClient{}, &thrift.TBufferedTransport{}
+		return nil, nil
 	}
 
 	userNode := usernode.NewUsernodeServiceClient(client1)
@@ -301,13 +300,11 @@ func Usernode(s2sname string) (*usernode.UsernodeServiceClient, *thrift.TBuffere
 // @param s2sname
 //
 func Authnode(s2sname string) (*authnode.AuthnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	authnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -317,13 +314,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	authNode := authnode.NewAuthnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	authNode := authnode.NewAuthnodeServiceClient(client1)
 	return authNode, trans1
 }
 
@@ -332,13 +331,11 @@ retry:
 // @param s2sname
 //
 func Notenode(s2sname string) (*notenode.NotenodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	notenode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -348,13 +345,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	noteNode := notenode.NewNotenodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	noteNode := notenode.NewNotenodeServiceClient(client1)
 	return noteNode, trans1
 }
 
@@ -363,13 +362,11 @@ retry:
 // @param s2sname
 //
 func Friendnode(s2sname string) (*friendnode.FriendnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	friendnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -379,13 +376,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	friendNode := friendnode.NewFriendnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	friendNode := friendnode.NewFriendnodeServiceClient(client1)
 	return friendNode, trans1
 }
 
@@ -394,13 +393,11 @@ retry:
 // @param s2sname
 //
 func Dartynode(s2sname string) (*dartynode.DartynodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	dartynode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -410,13 +407,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	dartyNode := dartynode.NewDartynodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	dartyNode := dartynode.NewDartynodeServiceClient(client1)
 	return dartyNode, trans1
 }
 
@@ -425,13 +424,11 @@ retry:
 // @param s2sname
 //
 func Sensinode(s2sname string) (*sensinode.SensinodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	sensinode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -441,13 +438,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	sensiNode := sensinode.NewSensinodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	sensiNode := sensinode.NewSensinodeServiceClient(client1)
 	return sensiNode, trans1
 }
 
@@ -456,13 +455,11 @@ retry:
 // @param s2sname
 //
 func Limitnode(s2sname string) (*limitnode.LimitnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	limitnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -472,13 +469,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	limitNode := limitnode.NewLimitnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	limitNode := limitnode.NewLimitnodeServiceClient(client1)
 	return limitNode, trans1
 }
 
@@ -487,13 +486,11 @@ retry:
 // @param s2sname
 //
 func Teachnode(s2sname string) (*teachnode.TeachnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	teachnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry.")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -503,26 +500,26 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry.")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, tran1 := client.Client()
-	teachNode := teachnode.NewTeachnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	teachNode := teachnode.NewTeachnodeServiceClient(client1)
 	return teachNode, tran1
 }
 
 // 创建cert客户端
 //
 func Certnode(s2sname string) (*certnode.CertnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	certnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry.")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -532,26 +529,26 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry.")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, tran1 := client.Client()
-	certNode := certnode.NewCertnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	certNode := certnode.NewCertnodeServiceClient(client1)
 	return certNode, tran1
 }
 
 // 创建macipnode客户端
 //
 func Macipnode(s2sname string) (*macipnode.MacipnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	macipnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -561,26 +558,26 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	macipNode := macipnode.NewMacipnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	macipNode := macipnode.NewMacipnodeServiceClient(client1)
 	return macipNode, trans1
 }
 
 // 获取Lognode客户端
 //
 func Lognode(s2sname string) (*lognode.LognodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	lognode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -590,26 +587,26 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	macipNode := lognode.NewLognodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	macipNode := lognode.NewLognodeServiceClient(client1)
 	return macipNode, trans1
 }
 
 // 获取Cronnode客户端
 //
 func Cronnode(s2sname string) (*cronnode.CronnodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	cronnode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -619,13 +616,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return nil, nil
 	}
 
 	client1, trans1 := client.Client()
-	cronNode := cronnode.NewCronnodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return nil, nil
+	}
 
+	cronNode := cronnode.NewCronnodeServiceClient(client1)
 	return cronNode, trans1
 }
 
@@ -639,11 +638,14 @@ func S2sname(host string, port int) (*s2sname.S2snameServiceClient, *thrift.TBuf
 		Port: port,
 	})
 	if nil == client {
-		panic("New Heegrpc client is nil")
+		panic("New NewHeegRpcClient  is nil")
 	}
 
 	client1, trans1 := client.Client()
-	s2s := s2sname.NewS2snameServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		panic("New NewHeegRpcClient client is nil")
+	}
 
+	s2s := s2sname.NewS2snameServiceClient(client1)
 	return s2s, trans1
 }
