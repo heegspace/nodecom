@@ -58,7 +58,7 @@ retry:
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		time.Sleep(2 * time.Second)
+		time.Sleep(2 * time.Microsecond)
 		goto retry
 	}
 
@@ -89,8 +89,7 @@ retry:
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return &usernode.CodenodeServiceClient{}, &thrift.TBufferedTransport{}
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -100,13 +99,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return &usernode.CodenodeServiceClient{}, &thrift.TBufferedTransport{}
 	}
 
 	client1, trans1 := client.Client()
-	codeNode := codenode.NewCodenodeServiceClient(client1)
+	if nil == client1 || nil == trans1 {
+		return &usernode.CodenodeServiceClient{}, &thrift.TBufferedTransport{}
+	}
 
+	codeNode := codenode.NewCodenodeServiceClient(client1)
 	return codeNode, trans1
 }
 
@@ -270,13 +271,11 @@ retry:
 // @param s2sname
 //
 func Usernode(s2sname string) (*usernode.UsernodeServiceClient, *thrift.TBufferedTransport) {
-retry:
 	usernode_s2s, err := registry.NewRegistry().Selector(s2sname)
 	if nil != err {
 		fmt.Println(s2sname, " node fail, 2s retry. ", err)
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return &usernode.UsernodeServiceClient{}, &thrift.TBufferedTransport{}
 	}
 
 	client := heegrpc.NewHeegRpcClient(rpc.Option{
@@ -286,13 +285,15 @@ retry:
 	if nil == client {
 		fmt.Println(s2sname, " client fail, 2s retry. ")
 
-		time.Sleep(2 * time.Second)
-		goto retry
+		return &usernode.UsernodeServiceClient{}, &thrift.TBufferedTransport{}
 	}
 
 	client1, trans1 := client.Client()
-	userNode := usernode.NewUsernodeServiceClient(client1)
+	if nil == cliclient1 || nil == trtrans1 {
+		return &usernode.UsernodeServiceClient{}, &thrift.TBufferedTransport{}
+	}
 
+	userNode := usernode.NewUsernodeServiceClient(client1)
 	return userNode, trans1
 }
 
