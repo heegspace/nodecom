@@ -1,8 +1,6 @@
 package nodecom
 
 import (
-	"fmt"
-
 	"github.com/heegspace/heegproto/friendnode"
 	"github.com/heegspace/heegproto/notenode"
 
@@ -24,7 +22,6 @@ import (
 	"github.com/heegspace/heegproto/lognode"
 	"github.com/heegspace/heegproto/macipnode"
 	"github.com/heegspace/heegproto/questionnode"
-	"github.com/heegspace/heegproto/s2sname"
 	"github.com/heegspace/heegproto/sensinode"
 	"github.com/heegspace/heegproto/teachnode"
 	"github.com/heegspace/heegproto/usernode"
@@ -139,7 +136,7 @@ func Authnode(s2sname string, cli client.Client) authnode.AuthnodeService {
 // @param s2sname
 //
 func Notenode(s2sname string, cli client.Client) notenode.NotenodeService {
-	reqcli := notenode.NewAuthnodeService(s2sname, cli)
+	reqcli := notenode.NewNotenodeService(s2sname, cli)
 
 	return reqcli
 }
@@ -222,16 +219,6 @@ func Lognode(s2sname string, cli client.Client) lognode.LognodeService {
 //
 func Cronnode(s2sname string, cli client.Client) cronnode.CronnodeService {
 	reqcli := cronnode.NewCronnodeService(s2sname, cli)
-
-	return reqcli
-}
-
-// 获取ls2s节点客户端
-//
-// @param s2sname
-//
-func S2sname(host string, port int) s2sname.S2SnameService {
-	reqcli := s2sname.NewS2SnameService(s2sname, cli)
 
 	return reqcli
 }
