@@ -11,6 +11,7 @@ import (
 
 	"github.com/heegspace/heegproto/common"
 
+	"github.com/asim/go-micro/v3/client"
 	"github.com/heegspace/heegproto/authnode"
 	"github.com/heegspace/heegproto/certnode"
 	"github.com/heegspace/heegproto/cloudnode"
@@ -21,11 +22,11 @@ import (
 	"github.com/heegspace/heegproto/limitnode"
 	"github.com/heegspace/heegproto/lognode"
 	"github.com/heegspace/heegproto/macipnode"
+	"github.com/heegspace/heegproto/pkgnode"
 	"github.com/heegspace/heegproto/questionnode"
 	"github.com/heegspace/heegproto/sensinode"
 	"github.com/heegspace/heegproto/teachnode"
 	"github.com/heegspace/heegproto/usernode"
-	"github.com/asim/go-micro/v3/client"
 )
 
 // 检查是否有权限
@@ -211,6 +212,14 @@ func Macipnode(s2sname string, cli client.Client) macipnode.MacipnodeService {
 //
 func Lognode(s2sname string, cli client.Client) lognode.LognodeService {
 	reqcli := lognode.NewLognodeService(s2sname, cli)
+
+	return reqcli
+}
+
+// 获取Pkgnode客户端
+//
+func Pkgnode(s2sname string, cli client.Client) pkgnode.PkgnodeService {
+	reqcli := pkgnode.NewPkgnodeService(s2sname, cli)
 
 	return reqcli
 }
