@@ -27,6 +27,7 @@ import (
 	"github.com/heegspace/heegproto/sensinode"
 	"github.com/heegspace/heegproto/teachnode"
 	"github.com/heegspace/heegproto/usernode"
+	"github.com/heegspace/heegproto/paynode"
 )
 
 // 检查是否有权限
@@ -228,6 +229,14 @@ func Pkgnode(s2sname string, cli client.Client) pkgnode.PkgnodeService {
 //
 func Cronnode(s2sname string, cli client.Client) cronnode.CronnodeService {
 	reqcli := cronnode.NewCronnodeService(s2sname, cli)
+
+	return reqcli
+}
+
+// 获取paynode客户端
+// 
+func Paynode(s2sname string, cli client.Client) paynode.PaynodeService {
+	reqcli := paynode.NewPaynodeService(s2sname, cli)
 
 	return reqcli
 }
