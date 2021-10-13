@@ -11,7 +11,6 @@ import (
 
 	"github.com/heegspace/heegproto/common"
 
-	"github.com/asim/go-micro/v3/client"
 	"github.com/heegspace/heegproto/authnode"
 	"github.com/heegspace/heegproto/certnode"
 	"github.com/heegspace/heegproto/cloudnode"
@@ -22,12 +21,13 @@ import (
 	"github.com/heegspace/heegproto/limitnode"
 	"github.com/heegspace/heegproto/lognode"
 	"github.com/heegspace/heegproto/macipnode"
+	"github.com/heegspace/heegproto/paynode"
 	"github.com/heegspace/heegproto/pkgnode"
 	"github.com/heegspace/heegproto/questionnode"
 	"github.com/heegspace/heegproto/sensinode"
 	"github.com/heegspace/heegproto/teachnode"
 	"github.com/heegspace/heegproto/usernode"
-	"github.com/heegspace/heegproto/paynode"
+	"go-micro.dev/v4/client"
 )
 
 // 检查是否有权限
@@ -234,7 +234,7 @@ func Cronnode(s2sname string, cli client.Client) cronnode.CronnodeService {
 }
 
 // 获取paynode客户端
-// 
+//
 func Paynode(s2sname string, cli client.Client) paynode.PaynodeService {
 	reqcli := paynode.NewPaynodeService(s2sname, cli)
 
