@@ -27,6 +27,7 @@ import (
 	"github.com/heegspace/heegproto/sensinode"
 	"github.com/heegspace/heegproto/teachnode"
 	"github.com/heegspace/heegproto/usernode"
+	"github.com/heegspace/heegproto/strategynode"
 	"go-micro.dev/v4/client"
 )
 
@@ -237,6 +238,14 @@ func Cronnode(s2sname string, cli client.Client) cronnode.CronnodeService {
 //
 func Paynode(s2sname string, cli client.Client) paynode.PaynodeService {
 	reqcli := paynode.NewPaynodeService(s2sname, cli)
+
+	return reqcli
+}
+
+// 获取策略客户端
+//
+func Strategynode(s2sname string, cli client.Client) strategynode.StrategynodeService {
+	reqcli := strategynode.NewStrategynodeService(s2sname, cli)
 
 	return reqcli
 }
